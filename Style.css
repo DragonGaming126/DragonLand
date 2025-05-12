@@ -1,0 +1,164 @@
+﻿@charset "UTF-8";
+
+body {
+    font-family: 'Cinzel', serif;
+    margin: 0;
+    padding: 0;
+    background: url('https://via.placeholder.com/1920x1080.png?text=DragonLand+Background') no-repeat center center fixed;
+    background-size: cover;
+    color: #fff;
+}
+
+header {
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 2em;
+    text-align: center;
+}
+
+h1, h2 {
+    margin: 0;
+    text-shadow: 2px 2px 4px #000;
+}
+
+p {
+    font-size: 1.2em;
+}
+
+nav {
+    margin: 1em 0;
+}
+
+    nav ul {
+        list-style-type: none;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        gap: 2em;
+    }
+
+        nav ul li a {
+            color: #ffd700;
+            text-decoration: none;
+            font-size: 1.2em;
+            padding: 0.5em 1em;
+            border: 2px solid transparent;
+            border-radius: 5px;
+        }
+
+            nav ul li a:hover {
+                border-color: #ffd700;
+            }
+
+            nav ul li a.active {
+                background-color: rgba(255, 215, 0, 0.2);
+                border-color: #ffd700;
+            }
+
+main {
+    padding: 2em;
+    background-color: rgba(0, 0, 0, 0.5);
+    margin: 2em;
+    border-radius: 10px;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+    ul.social-links {
+        display: flex;
+        justify-content: center;
+        gap: 2em;
+    }
+
+        ul.social-links li a {
+            display: flex;
+            align-items: center;
+            color: #ffd700;
+            text-decoration: none;
+            font-size: 1.5em;
+        }
+
+            ul.social-links li a img {
+                width: 40px;
+                margin-right: 10px;
+            }
+
+.tutoriel {
+    margin-bottom: 1em;
+    padding: 1em;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+    .tutoriel h3 {
+        margin-top: 0;
+        color: #ffd700;
+    }
+
+#search {
+    width: 100%;
+    padding: 0.5em;
+    margin-bottom: 1em;
+    font-family: 'Cinzel', serif;
+    font-size: 1em;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    border: 2px solid #ffd700;
+    border-radius: 5px;
+}
+
+footer {
+    background-color: rgba(0, 0, 0, 0.7);
+    text-align: center;
+    padding: 1em;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+#dragon {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background: url('https://via.placeholder.com/100x100.png?text=Dragon') no-repeat;
+    background-size: contain;
+    display: none;
+}
+
+
+.star {
+    color: #ffd700;
+    margin-left: -1.5em;
+    font-size: 1.2em;
+}
+
+.modpack-link {
+    color: #ffd700;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+    .modpack-link:hover {
+        text-decoration: underline;
+        color: #fff;
+    }
+
+@media (max-width: 768px) {
+    nav ul {
+        flex-direction: column;
+        gap: 1em;
+    }
+
+    ul.social-links {
+        flex-direction: column;
+        gap: 1em;
+    }
+
+    main {
+        margin: 1em;
+        padding: 1em;
+    }
+}
