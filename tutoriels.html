@@ -1,0 +1,80 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="icon" href="Images/icone.png" type="image/png">
+
+    <title>DragonLand - Tutoriels</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>DragonLand - Tutoriels</h1>
+        <p>Maîtrisez l'art du gaming avec mes guides</p>
+        <nav>
+            <ul>
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="minecraft.html">Minecraft</a></li>
+                <li><a href="tutoriels.html" class="active">Tutoriels</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section id="tutoriels">
+            <h2>Tutoriels</h2>
+            <p>Découvrez mes guides pour maîtriser Minecraft et bien plus. Utilisez la barre de recherche pour trouver un tutoriel spécifique.</p>
+            <input type="text" id="search" placeholder="Rechercher un tutoriel...">
+
+            <div id="tutoriels-list">
+
+                <div class="tutoriel">
+                    <h3>Installer des mods dans Minecraft</h3>
+                    <p>Apprenez à installer des mods pour personnaliser votre expérience de jeu.</p>
+                    <p><a href="https://www.youtube.com/watch?v=mod_install" target="_blank">Vidéo</a> | <a href="https://example.com/mod-installer" target="_blank">Forge Installer</a></p>
+                </div>
+
+                <div class="tutoriel">
+                    <h3>Utiliser OptiFine</h3>
+                    <p>Optimisez les performances de Minecraft avec OptiFine.</p>
+                    <p><a href="https://www.youtube.com/watch?v=optifine" target="_blank">Vidéo</a> | <a href="https://example.com/optifine" target="_blank">OptiFine Download</a></p>
+                </div>
+
+                <div class="tutoriel">
+                    <h3>Créer un pack de ressources</h3>
+                    <p>Personnalisez l'apparence de Minecraft avec votre propre pack de ressources.</p>
+                    <p><a href="https://www.youtube.com/watch?v=resource_pack" target="_blank">Vidéo</a> | <a href="https://example.com/resource-pack" target="_blank">Pack Template</a></p>
+                </div>
+
+
+                <div class="tutoriel">
+                    <h3>Créer un serveur Minecraft</h3>
+                    <p>Configurez un serveur pour jouer avec vos amis en ligne.</p>
+                    <p><a href="https://www.youtube.com/watch?v=server_setup" target="_blank">Vidéo</a> | <a href="https://example.com/server-setup" target="_blank">Server JAR</a></p>
+                </div>
+
+
+            </div>
+        </section>
+
+            <p>© 2025 DragonLand - Tous droits réservés</p>
+    </main>
+    
+    <div id="dragon"></div>
+    <script>
+
+        // Recherche de tutoriels
+        document.getElementById('search').addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const tutoriels = document.querySelectorAll('.tutoriel');
+            tutoriels.forEach(tutoriel => {
+                const title = tutoriel.querySelector('h3').textContent.toLowerCase();
+                const description = tutoriel.querySelector('p').textContent.toLowerCase();
+                tutoriel.style.display = (title.includes(searchTerm) || description.includes(searchTerm)) ? 'block' : 'none';
+            });
+        });
+    </script>
+</body>
+</html>
