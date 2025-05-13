@@ -1,4 +1,4 @@
-﻿@charset "UTF-8";
+@charset "UTF-8";
 
 body {
     font-family: 'Cinzel', serif;
@@ -91,11 +91,21 @@ ul {
     background-color: rgba(255, 255, 255, 0.1);
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    cursor: default;
 }
 
     .tutoriel h3 {
         margin-top: 0;
         color: #ffd700;
+    }
+
+.tutoriel-clickable {
+    cursor: pointer;
+}
+
+    .tutoriel-clickable:hover {
+        background-color: rgba(255, 215, 0, 0.2);
+        text-decoration: none;
     }
 
 #search {
@@ -114,20 +124,10 @@ footer {
     background-color: rgba(0, 0, 0, 0.7);
     text-align: center;
     padding: 1em;
-    position: fixed;
+    position: page;
     bottom: 0;
     width: 100%;
 }
-
-#dragon {
-    position: absolute;
-    width: 100px;
-    height: 100px;
-    background: url('https://via.placeholder.com/100x100.png?text=Dragon') no-repeat;
-    background-size: contain;
-    display: none;
-}
-
 
 .star {
     color: #ffd700;
@@ -144,6 +144,68 @@ footer {
     .modpack-link:hover {
         text-decoration: underline;
         color: #fff;
+    }
+
+.video-container {
+    position: relative;
+    padding-bottom: 56.25%; /* Ratio 16:9 */
+    height: 0;
+    overflow: hidden;
+    max-width: 100%;
+    background: #000;
+    margin: 1em 0;
+}
+
+    .video-container iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+.code-container {
+    position: relative;
+    margin: 1em 0;
+}
+
+    .code-container pre {
+        margin: 0;
+        padding: 1em; /* Ajout de padding pour l'esthétique */
+        background-color: rgba(0, 0, 0, 0.5); /* Fond noir pur */
+        border-radius: 5px;
+        overflow-x: auto;
+    }
+
+    .code-container button.copy-button {
+        position: absolute;
+        top: 0.5em;
+        right: 0.5em;
+        padding: 0.5em 1em;
+        background-color: #e0e0e0;
+        color: #000;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-family: 'Cinzel', serif;
+        font-size: 0.9em;
+    }
+
+        .code-container button.copy-button:hover {
+            background-color: #ffd700;
+        }
+
+    .code-container .copy-message {
+        position: absolute;
+        top: 0.5em;
+        right: 6em;
+        background-color: rgba(0, 128, 0, 0.8);
+        color: #fff;
+        padding: 0.3em 0.7em;
+        border-radius: 3px;
+        opacity: 0;
+        transition: opacity 0.3s;
+        font-size: 0.9em;
     }
 
 @media (max-width: 768px) {
