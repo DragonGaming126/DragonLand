@@ -1,0 +1,245 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>DragonLand - Jeu : Nombre Mystère</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../style.css">
+    <link rel="icon" href="../Images/icone.png" type="image/png">
+    <style>
+        .game-container {
+            text-align: center;
+            margin-top: 1em;
+        }
+
+            .game-container input[type="number"] {
+                padding: 0.5em;
+                font-family: 'Cinzel', serif;
+                font-size: 1em;
+                background-color: rgba(0, 0, 0, 0.8);
+                color: #fff;
+                border: 2px solid #ffd700;
+                border-radius: 5px;
+                width: 150px;
+                margin-right: 1em;
+            }
+
+            .game-container button {
+                padding: 0.5em 1em;
+                background-color: rgba(255, 215, 0, 0.8);
+                color: #000;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                font-family: 'Cinzel', serif;
+                font-size: 1em;
+            }
+
+                .game-container button:hover {
+                    background-color: #ffd700;
+                }
+
+                .game-container button:disabled {
+                    background-color: rgba(255, 215, 0, 0.3);
+                    cursor: not-allowed;
+                }
+
+            .game-container p#feedback {
+                margin: 0.5em 0;
+                font-size: 1.1em;
+            }
+
+            .game-container p#attempts {
+                margin: 0.5em 0;
+                font-size: 1em;
+                color: #ccc;
+            }
+
+            .game-container .button-group {
+                display: flex;
+                justify-content: center;
+                gap: 1em; /* Espacement entre les boutons */
+                margin-top: 0.5em;
+            }
+
+        #performance-button {
+            margin-top: 1em;
+            padding: 0.5em 1em;
+            background-color: rgba(255, 215, 0, 0.8);
+            color: #000;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Cinzel', serif;
+            font-size: 1em;
+        }
+
+            #performance-button:hover {
+                background-color: #ffd700;
+            }
+
+        #performance-section {
+            display: none;
+            text-align: center;
+            margin-top: 1em;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 1em;
+            border-radius: 5px;
+        }
+
+            #performance-section ul {
+                list-style-type: none;
+                padding: 0;
+            }
+
+                #performance-section ul li {
+                    margin: 0.5em 0;
+                    color: #ffd700;
+                }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>DragonLand - Jeu</h1>
+        <p>Jeu du Nombre Mystère</p>
+        <nav>
+            <ul>
+                <li><a href="../index.html">Accueil</a></li>
+                <li><a href="../minecraft.html">Minecraft</a></li>
+                <li><a href="../tutoriels.html">Tutoriels</a></li>
+                <li><a href="../jeux.html" class="active">Jeux</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section id="jeu-detail">
+            <h2>Jeu du Nombre Mystère</h2>
+            <p>Devinez le nombre secret entre 1 et 100 ! Entrez votre proposition ci-dessous :</p>
+            <div class="game-container">
+                <input type="number" id="guessInput" placeholder="Entrez un nombre" min="1" max="100">
+                <button id="guessButton" onclick="checkGuess()">Deviner</button>
+                <p id="feedback"></p>
+                <p id="attempts">Nombre d'essais : 0</p>
+                <div class="button-group">
+                    <button id="replayButton" onclick="replayGame()" style="display: inline-block;">Rejouer</button>
+                    <button id="resetButton" onclick="resetGame()" style="display: inline-block; ">Reset</button>
+                </div>
+            </div>
+            <button id="performance-button" onclick="togglePerformance()">Voir mes précédentes performances</button>
+            <div id="performance-section">
+                <h3>Historique des performances</h3>
+                <ul id="performance-list"></ul>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>© 2025 DragonLand - Tous droits réservés</p>
+    </footer>
+    <script>
+        let secretNumber = Math.floor(Math.random() * 100) + 1; // Nombre aléatoire entre 1 et 100
+        let attempts = 0;
+        let performances = JSON.parse(localStorage.getItem('performances')) || [];
+
+        function checkGuess() {
+            const guessInput = document.getElementById('guessInput');
+            const feedback = document.getElementById('feedback');
+            const attemptsDisplay = document.getElementById('attempts');
+            const replayButton = document.getElementById('replayButton');
+            const resetButton = document.getElementById('resetButton');
+            const guess = parseInt(guessInput.value);
+
+            if (isNaN(guess) || guess < 1 || guess > 100) {
+                feedback.textContent = "Veuillez entrer un nombre entre 1 et 100.";
+                feedback.style.color = "#ff5555";
+                return;
+            }
+
+            attempts++;
+            attemptsDisplay.textContent = `Nombre d'essais : ${attempts}`;
+
+            if (guess === secretNumber) {
+                feedback.textContent = `Félicitations ! Vous avez trouvé le nombre en ${attempts} essais !`;
+                feedback.style.color = "#00ff00";
+                guessInput.disabled = true;
+                document.getElementById('guessButton').disabled = true;
+                replayButton.style.display = 'inline-block';
+                resetButton.style.display = 'inline-block';
+                // Enregistrer la performance
+                performances.unshift({ number: secretNumber, attempts: attempts });
+                localStorage.setItem('performances', JSON.stringify(performances));
+            } else if (guess < secretNumber) {
+                feedback.textContent = "Trop bas ! Essayez un nombre plus grand.";
+                feedback.style.color = "#ffd700";
+            } else {
+                feedback.textContent = "Trop haut ! Essayez un nombre plus petit.";
+                feedback.style.color = "#ffd700";
+            }
+
+            guessInput.value = ''; // Réinitialiser le champ après chaque tentative
+            guessInput.focus();
+        }
+
+        function replayGame() {
+            secretNumber = Math.floor(Math.random() * 100) + 1;
+            attempts = 0;
+            document.getElementById('guessInput').disabled = false;
+            document.getElementById('guessButton').disabled = false;
+            document.getElementById('guessInput').value = '';
+            document.getElementById('feedback').textContent = '';
+            document.getElementById('attempts').textContent = "Nombre d'essais: 0";
+            //document.getElementById('replayButton').style.display = 'none';
+            //document.getElementById('resetButton').style.display = 'none';
+            document.getElementById('guessInput').focus();
+        }
+
+        function resetGame() {
+            if (confirm("Voulez-vous réinitialiser le jeu et effacer l'historique des performances ?")) {
+                secretNumber = Math.floor(Math.random() * 100) + 1;
+                attempts = 0;
+                document.getElementById('guessInput').disabled = false;
+                document.getElementById('guessButton').disabled = false;
+                document.getElementById('guessInput').value = '';
+                document.getElementById('feedback').textContent = '';
+                document.getElementById('attempts').textContent = "Nombre d'essais: 0";
+                //document.getElementById('replayButton').style.display = 'none';
+                //document.getElementById('resetButton').style.display = 'none';
+                localStorage.removeItem('performances');
+                performances = [];
+                document.getElementById('guessInput').focus();
+                // Cacher la section des performances si ouverte
+                document.getElementById('performance-section').style.display = 'none';
+            }
+        }
+
+        function togglePerformance() {
+            const performanceSection = document.getElementById('performance-section');
+            const performanceList = document.getElementById('performance-list');
+            if (performanceSection.style.display === 'none') {
+                performanceSection.style.display = 'block';
+                // Charger les performances depuis localStorage
+                performances = JSON.parse(localStorage.getItem('performances')) || [];
+                performanceList.innerHTML = '';
+                performances.forEach((perf, index) => {
+                    const li = document.createElement('li');
+                    li.textContent = `Partie ${index + 1}: Nombre mystère ${perf.number}, ${perf.attempts} essai(s)`;
+                    performanceList.appendChild(li);
+                });
+            } else {
+                performanceSection.style.display = 'none';
+            }
+        }
+
+        // Permettre la soumission avec la touche Entrée
+        document.getElementById('guessInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                checkGuess();
+            }
+        });
+
+        // Focus sur le champ au chargement
+        document.getElementById('guessInput').focus();
+    </script>
+</body>
+</html>
