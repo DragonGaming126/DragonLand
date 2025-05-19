@@ -1,5 +1,8 @@
 @charset "UTF-8";
 
+/* --------------------------------- */
+/* Éléments globaux */
+/* --------------------------------- */
 body {
     font-family: 'Cinzel', serif;
     margin: 0;
@@ -7,12 +10,6 @@ body {
     background: url('https://via.placeholder.com/1920x1080.png?text=DragonLand+Background') no-repeat center center fixed;
     background-size: cover;
     color: #fff;
-}
-
-header {
-    background-color: rgba(0, 0, 0, 0.7);
-    padding: 2em;
-    text-align: center;
 }
 
 h1, h2 {
@@ -24,6 +21,18 @@ p {
     font-size: 1.2em;
 }
 
+/* --------------------------------- */
+/* Header */
+/* --------------------------------- */
+header {
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 2em;
+    text-align: center;
+}
+
+/* --------------------------------- */
+/* Navigation */
+/* --------------------------------- */
 nav {
     margin: 1em 0;
 }
@@ -54,6 +63,9 @@ nav {
                 border-color: #ffd700;
             }
 
+/* --------------------------------- */
+/* Main */
+/* --------------------------------- */
 main {
     padding: 2em;
     background-color: rgba(0, 0, 0, 0.5);
@@ -61,6 +73,9 @@ main {
     border-radius: 10px;
 }
 
+/* --------------------------------- */
+/* Listes génériques */
+/* --------------------------------- */
 ul {
     list-style-type: none;
     padding: 0;
@@ -85,6 +100,9 @@ ul {
                 margin-right: 10px;
             }
 
+/* --------------------------------- */
+/* Tutoriels */
+/* --------------------------------- */
 .tutoriel {
     margin-bottom: 1em;
     padding: 1em;
@@ -108,6 +126,35 @@ ul {
         text-decoration: none;
     }
 
+/* --------------------------------- */
+/* Jeux */
+/* --------------------------------- */
+.jeu {
+    margin-bottom: 1em;
+    padding: 1em;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    cursor: default;
+}
+
+    .jeu h3 {
+        margin-top: 0;
+        color: #ffd700;
+    }
+
+.jeu-clickable {
+    cursor: pointer;
+}
+
+    .jeu-clickable:hover {
+        background-color: rgba(255, 215, 0, 0.2);
+        text-decoration: none;
+    }
+
+/* --------------------------------- */
+/* Barre de recherche */
+/* --------------------------------- */
 #search {
     width: 100%;
     padding: 0.5em;
@@ -120,15 +167,21 @@ ul {
     border-radius: 5px;
 }
 
-footer {
+/* --------------------------------- */
+/* Footer */
+/* --------------------------------- */
+/*footer {
     background-color: rgba(0, 0, 0, 0.7);
     text-align: center;
     padding: 1em;
-    position: page;
+    position: fixed;
     bottom: 0;
     width: 100%;
-}
+}*/
 
+/* --------------------------------- */
+/* Éléments spécifiques */
+/* --------------------------------- */
 .star {
     color: #ffd700;
     margin-left: -1.5em;
@@ -146,6 +199,9 @@ footer {
         color: #fff;
     }
 
+/* --------------------------------- */
+/* Conteneur de vidéo */
+/* --------------------------------- */
 .video-container {
     position: relative;
     padding-bottom: 56.25%; /* Ratio 16:9 */
@@ -164,6 +220,9 @@ footer {
         height: 100%;
     }
 
+/* --------------------------------- */
+/* Conteneur de code */
+/* --------------------------------- */
 .code-container {
     position: relative;
     margin: 1em 0;
@@ -171,8 +230,8 @@ footer {
 
     .code-container pre {
         margin: 0;
-        padding: 1em; /* Ajout de padding pour l'esthétique */
-        background-color: rgba(0, 0, 0, 0.5); /* Fond noir pur */
+        padding: 1em;
+        background-color: #000; /* Fond noir pur */
         border-radius: 5px;
         overflow-x: auto;
     }
@@ -182,7 +241,7 @@ footer {
         top: 0.5em;
         right: 0.5em;
         padding: 0.5em 1em;
-        background-color: #e0e0e0;
+        background-color: rgba(255, 215, 0, 0.8);
         color: #000;
         border: none;
         border-radius: 5px;
@@ -208,6 +267,9 @@ footer {
         font-size: 0.9em;
     }
 
+/* --------------------------------- */
+/* Media Queries */
+/* --------------------------------- */
 @media (max-width: 768px) {
     nav ul {
         flex-direction: column;
