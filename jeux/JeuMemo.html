@@ -22,6 +22,7 @@
             </ul>
         </nav>
     </header>
+
     <main>
         <section id="jeu-detail">
             <h2>Memory Game</h2>
@@ -79,7 +80,7 @@
 
             gameActive = true;
             attempts = 0;
-            document.getElementById('attempts').textContent = 'Nombre d'essais : 0';
+            document.getElementById('attempts').textContent = "Nombre d'essais : 0";
             gameContainer.style.display = 'block';
             cardGrid.innerHTML = '';
 
@@ -106,7 +107,7 @@
                 cardElement.addEventListener('click', flipCard);
                 cardGrid.appendChild(cardElement);
                 const imgElement = document.createElement('img');
-                imgElement.src = `../Images/MemoGame/${gameMode === 'genshin' ? 'GenshinImpactPersonnage' : 'HonkaiStarRailsPersonnages'}/${card.image}.png`;
+                imgElement.src = `../Images/MemoGame/${gameMode === 'genshin' ? 'GenshinImpactPersonnages' : 'HonkaiStarRailsPersonnages'}/${card.image}.png`;
                 cardElement.appendChild(imgElement);
             });
         }
