@@ -1,0 +1,199 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>DragonLand - Jeu : Memory Game</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../Style.css">
+    <link rel="icon" href="../Images/icone.png" type="image/png">
+</head>
+<body>
+    <header>
+        <h1>DragonLand - Jeu</h1>
+        <p>Memory Game</p>
+        <nav>
+            <ul>
+                <li><a href="../index.html">Accueil</a></li>
+                <li><a href="../minecraft.html">Minecraft</a></li>
+                <li><a href="../tutoriels.html">Tutoriels</a></li>
+                <li><a href="../jeux.html" class="active">Jeux</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="jeu-detail">
+            <h2>Memory Game</h2>
+            <p>Trouvez les paires de cartes pour gagner !</p>
+            <div class="selection-container">
+                <select id="gameMode">
+                    <option value="genshin">Genshin Impact</option>
+                    <option value="honkai">Honkai Star Rails</option>
+                </select>
+                <select id="difficulty">
+                    <option value="5">5 paires (10 cartes)</option>
+                    <option value="10">10 paires (20 cartes)</option>
+                </select>
+                <button onclick="startGame()">Lancer le jeu</button>
+            </div>
+            <div class="game-container" id="game-container" style="display: none;">
+                <div class="card-grid" id="card-grid"></div>
+                <p id="attempts">Nombre d'essais : 0</p>
+                <button id="replayButton" onclick="replayGame()" style="display: none;">Rejouer</button>
+                <button id="resetButton" onclick="resetGame()" style="display: none;">Reset</button>
+            </div>
+            <button id="performance-button" onclick="togglePerformance()">Voir mes précédentes performances</button>
+            <div id="performance-section">
+                <h3>Historique des victoires</h3>
+                <ul id="performance-list"></ul>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>© 2025 DragonLand - Tous droits réservés</p>
+    </footer>
+    <script>
+        let cards = [];
+        let flippedCards = [];
+        let attempts = 0;
+        let gameActive = false;
+        let performances = JSON.parse(localStorage.getItem('performancesMemo')) || [];
+
+        const genshinImages = [
+            'clorine', 'Cyno', 'Diluc', 'Furina', 'gaming',
+            'Kazuha', 'kinich', 'klee', 'ororon', 'Yoimiya'
+        ];
+        const honkaiImages = [
+            'DanHeng', 'Fossoyeur', 'Jiaoqiu', 'Jingliu', 'JinYuang',
+            'Kafka', 'Mydei', 'Phaenon', 'Rappa', 'Yangqing'
+        ];
+
+        function startGame() {
+            const gameMode = document.getElementById('gameMode').value;
+            const difficulty = parseInt(document.getElementById('difficulty').value);
+            const gameContainer = document.getElementById('game-container');
+            const cardGrid = document.getElementById('card-grid');
+
+            if (gameActive) return;
+
+            gameActive = true;
+            attempts = 0;
+            document.getElementById('attempts').textContent = "Nombre d'essais : 0";
+            gameContainer.style.display = 'block';
+            cardGrid.innerHTML = '';
+
+            const images = gameMode === 'genshin' ? genshinImages : honkaiImages;
+            const pairCount = difficulty;
+            const selectedImages = images.slice(0, pairCount);
+            const gameImages = [...selectedImages, ...selectedImages]; // Créer des paires
+            for (let i = gameImages.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [gameImages[i], gameImages[j]] = [gameImages[j], gameImages[i]];
+            }
+
+            cards = gameImages.map((img, index) => ({
+                id: index,
+                image: img,
+                flipped: false,
+                matched: false
+            }));
+
+            cards.forEach(card => {
+                const cardElement = document.createElement('div');
+                cardElement.classList.add('card');
+                cardElement.dataset.id = card.id;
+                cardElement.addEventListener('click', flipCard);
+                cardGrid.appendChild(cardElement);
+                const imgElement = document.createElement('img');
+                imgElement.src = `../Images/MemoGame/${gameMode === 'genshin' ? 'GenshinImpactPersonnages' : 'HonkaiStarRailsPersonnages'}/${card.image}.png`;
+                cardElement.appendChild(imgElement);
+            });
+        }
+
+        function flipCard() {
+            const card = cards.find(c => c.id === parseInt(this.dataset.id));
+            if (flippedCards.length < 2 && !card.flipped && !card.matched) {
+                card.flipped = true;
+                flippedCards.push(card);
+                this.classList.add('flipped');
+                if (flippedCards.length === 2) {
+                    attempts++;
+                    document.getElementById('attempts').textContent = `Nombre d'essais : ${attempts}`;
+                    setTimeout(checkMatch, 1000);
+                }
+            }
+        }
+
+        function checkMatch() {
+            const [card1, card2] = flippedCards;
+            const cardElement1 = document.querySelector(`.card[data-id="${card1.id}"]`);
+            const cardElement2 = document.querySelector(`.card[data-id="${card2.id}"]`);
+            if (card1.image === card2.image) {
+                card1.matched = true;
+                card2.matched = true;
+                cardElement1.classList.add('matched');
+                cardElement2.classList.add('matched');
+                flippedCards = [];
+                if (cards.every(c => c.matched)) {
+                    endGame();
+                }
+            } else {
+                card1.flipped = false;
+                card2.flipped = false;
+                cardElement1.classList.remove('flipped');
+                cardElement2.classList.remove('flipped');
+                flippedCards = [];
+            }
+        }
+
+        function endGame() {
+            gameActive = false;
+            const gameMode = document.getElementById('gameMode').value;
+            const partNumber = performances.length + 1;
+            performances.unshift({ mode: gameMode, part: partNumber, attempts: attempts });
+            localStorage.setItem('performancesMemo', JSON.stringify(performances));
+            document.getElementById('replayButton').style.display = 'inline-block';
+            document.getElementById('resetButton').style.display = 'inline-block';
+        }
+
+        function replayGame() {
+            startGame();
+            document.getElementById('replayButton').style.display = 'none';
+            document.getElementById('resetButton').style.display = 'none';
+        }
+
+        function resetGame() {
+            if (confirm("Voulez-vous réinitialiser le jeu et effacer l'historique des performances ?")) {
+                startGame();
+                localStorage.removeItem('performancesMemo');
+                performances = [];
+                document.getElementById('replayButton').style.display = 'none';
+                document.getElementById('resetButton').style.display = 'none';
+                document.getElementById('performance-section').style.display = 'none';
+            }
+        }
+
+        function togglePerformance() {
+            const performanceSection = document.getElementById('performance-section');
+            const performanceList = document.getElementById('performance-list');
+            if (performanceSection.style.display === 'none') {
+                performanceSection.style.display = 'block';
+                performances = JSON.parse(localStorage.getItem('performancesMemo')) || [];
+                performanceList.innerHTML = '';
+                performances.forEach((perf, index) => {
+                    const li = document.createElement('li');
+                    li.textContent = `Partie ${perf.part}: Mode ${perf.mode}, ${perf.attempts} essai(s)`;
+                    performanceList.appendChild(li);
+                });
+            } else {
+                performanceSection.style.display = 'none';
+            }
+        }
+
+        // Focus sur le premier select au chargement
+        document.getElementById('gameMode').focus();
+    </script>
+</body>
+</html>
