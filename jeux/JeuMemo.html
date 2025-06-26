@@ -152,7 +152,8 @@
             gameActive = false;
             const gameMode = document.getElementById('gameMode').value;
             const partNumber = performances.length + 1;
-            performances.unshift({ mode: gameMode, part: partNumber, attempts: attempts });
+            const difficulty = parseInt(document.getElementById('difficulty').value);
+            performances.unshift({ mode: gameMode, part: partNumber, attempts: attempts, pairs: difficulty });
             localStorage.setItem('performancesMemo', JSON.stringify(performances));
             document.getElementById('replayButton').style.display = 'inline-block';
             document.getElementById('resetButton').style.display = 'inline-block';
@@ -183,10 +184,20 @@
                 performances = JSON.parse(localStorage.getItem('performancesMemo')) || [];
                 performanceList.innerHTML = '';
                 performances.forEach((perf, index) => {
+                    const pairs = perf.pairs ? perf.pairs : 5;
+                    let modeLabel = '';
+                    if (perf.mode === 'genshin') {
+                        modeLabel = '<span style="color:#1e90ff; font-weight:bold;">Genshin</span>';
+                    } else if (perf.mode === 'honkai') {
+                        modeLabel = '<span style="color:#b22222; font-weight:bold;">Honkai</span>';
+                    } else {
+                        modeLabel = `<span style="font-weight:bold;">${perf.mode}</span>`;
+                    }
                     const li = document.createElement('li');
-                    li.textContent = `Partie ${perf.part}: Mode ${perf.mode}, ${perf.attempts} essai(s)`;
+                    li.innerHTML = `${modeLabel} : ${perf.attempts} essai(s) - ${pairs} paires`;
                     performanceList.appendChild(li);
                 });
+
             } else {
                 performanceSection.style.display = 'none';
             }
