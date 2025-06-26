@@ -21,6 +21,11 @@ p {
     font-size: 1.2em;
 }
 
+.sous-liste {
+    margin-left: 2em;
+    list-style-type: disc;
+}
+
 /* --------------------------------- */
 /* Header */
 /* --------------------------------- */
