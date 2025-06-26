@@ -1,0 +1,408 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>DragonLand - Action ou Vérité</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../Style.css">
+    <link rel="icon" href="Images/icone.png" type="image/png">
+    <style>
+        .game-container {
+            text-align: center;
+            padding: 2em;
+        }
+
+        .theme-selector {
+            margin-bottom: 1em;
+        }
+
+            .theme-selector select {
+                padding: 0.5em;
+                font-family: 'Cinzel', serif;
+                font-size: 1em;
+                background-color: rgba(255, 215, 0, 0.8);
+                color: #000;
+                border: none;
+                border-radius: 5px;
+            }
+
+        .choice-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 2em;
+            margin-bottom: 1em;
+        }
+
+        .choice-button {
+            padding: 0.5em 1em;
+            font-family: 'Cinzel', serif;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+            .choice-button.action {
+                background-color: #ff4444;
+                color: #fff;
+            }
+
+                .choice-button.action:hover {
+                    background-color: #cc0000;
+                }
+
+            .choice-button.verite {
+                background-color: #00cc00;
+                color: #fff;
+            }
+
+                .choice-button.verite:hover {
+                    background-color: #009900;
+                }
+
+        .question-container {
+            margin-top: 1em;
+            background-color: rgba(0, 0, 0, 0.7);
+            border: 2px solid #ffd700;
+            border-radius: 5px;
+            padding: 1em;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+        }
+
+        .no-proposal {
+            text-align: center;
+            color: #ff4444;
+            font-size: 1.2em;
+            padding: 1em;
+            background-color: rgba(0, 0, 0, 0.7);
+            border: 2px solid #ff4444;
+            border-radius: 5px;
+            margin: 1em auto;
+            max-width: 600px;
+        }
+
+        .history-section {
+            text-align: left;
+            margin-top: 1em;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 1em;
+            border-radius: 5px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+            .history-section h3 {
+                color: #ffd700;
+                margin-top: 0;
+            }
+
+            .history-section ul {
+                list-style-type: none;
+                padding: 0;
+                color: #fff;
+            }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>DragonLand - Jeu</h1>
+        <p>Action ou Vérité</p>
+        <nav>
+            <ul>
+                <li><a href="../index.html">Accueil</a></li>
+                <li><a href="../minecraft.html">Minecraft</a></li>
+                <li><a href="../tutoriels.html">Tutoriels</a></li>
+                <li><a href="../jeux.html" class="active">Jeux</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section id="jeu-detail">
+            <h2>Action ou Vérité</h2>
+            <p>Choisis une action ou une vérité !</p>
+            <div class="game-container">
+                <div class="theme-selector">
+                    <select id="themeSelect" onchange="loadQuestion()">
+                        <option value="general">Général</option>
+                        <option value="gachas">Gachas</option>
+                        <option value="extreme">Extrême</option>
+                        <option value="hot">Hot (-18)</option>
+                    </select>
+                </div>
+                <div class="choice-buttons">
+                    <button class="choice-button action" onclick="chooseOption('action')">Action</button>
+                    <button class="choice-button verite" onclick="chooseOption('verite')">Vérité</button>
+                </div>
+                <div class="question-container" id="questionContainer">Choisis une option pour commencer...</div>
+                <div class="history-section">
+                    <h3>Historique des choix (non sauvegardé)</h3>
+                    <ul id="historyList"></ul>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>© 2025 DragonLand - Tous droits réservés</p>
+    </footer>
+    <script>
+        const questions = {
+            general: {
+                questions: [
+                    "Quel est ton plus grand rêve ?",
+                    "Quelle est ta couleur préférée ?",
+                    "Quel est ton plat préféré ?",
+                    "Si tu pouvais voyager n'importe où, où irais-tu ?",
+                    "Quel est ton film préféré ?",
+                    "Quel super-pouvoir aimerais-tu avoir ?",
+                    "Quel est ton meilleur souvenir d'enfance ?",
+                    "Quel animal préfères-tu ?",
+                    "Quelle est ta saison préférée et pourquoi ?",
+                    "Quel est le dernier livre que tu as lu ?",
+                    "As-tu déjà menti aujourd'hui ?",
+                    "Quel est ton pire défaut ?",
+                    "Quelle est la chose la plus folle que tu aies faite ?",
+                    "Quel est ton plus grand regret ?",
+                    "Si tu pouvais rencontrer une personne célèbre, qui serait-ce ?",
+                    "Quelle est ta chanson préférée ?",
+                    "Quel est ton hobby préféré ?",
+                    "Quelle est la chose la plus embarrassante qui te soit arrivée ?",
+                    "Quel est ton plus grand accomplissement ?",
+                    "Quelle est ta plus grande peur ?",
+                    "Si tu pouvais changer une chose dans ta vie, quelle serait-elle ?",
+                    "Quel est ton endroit préféré dans ta ville ?",
+                    "Quel est ton sport préféré ?",
+                    "Quelle est ta série préférée ?",
+                    "Quel est ton plus grand talent ?",
+                    "Si tu pouvais apprendre une nouvelle compétence, laquelle choisirais-tu ?",
+                    "En quoi voudrais-tu te réincarner ?",
+                    "Si tu devais choisir entre la beauté et l'intelligence, que choisirais-tu ?"
+                ],
+                actions: [
+                    "Fais 10 sauts sur place",
+                    "Chante une chanson pendant 10 secondes",
+                    "Imite un animal pendant 15 secondes",
+                    "Fais une grimace pendant 5 secondes",
+                    "Raconte une blague",
+                    "Fais le tour de la pièce en marchant à reculons",
+                    "Tape dans tes mains 15 fois",
+                    "Fais semblant de jouer de la guitare",
+                    "Fais une statue pendant 10 secondes",
+                    "Appelle un ami et dis-lui un secret",
+                    "Fais une danse gênante",
+                    "Mange quelque chose de piquant",
+                    "Fais un compliment à la personne de ton choix",
+                    "Fais un câlin à la personne à ta gauche",
+                    "Fais un bisou sur la joue de la personne à ta droite",
+                    "Fais un tour sur toi-même 5 fois",
+                    "Fais semblant de parler au téléphone pendant 30 secondes",
+                    "Fais un dessin sur le dos de la personne à ta droite avec ton doigt",
+                    "Fais un bruit d'animal de ton choix pendant 10 secondes",
+
+                ]
+            },
+
+            extreme: {
+                questions: [
+                    "Est ce que tu as déja mal parlé sur une personne ici ?",
+                    "Est-ce que tu as déjà consommé de la drogue ? Si oui, raconte !",
+                    "Parmi tous les joueurs, qui n'arrivent jamais à garder un secret ?",
+                    "Est-ce que tu t'es déjà baigné(e) nu(e) ?",
+                    "Raconte nous une fois où tu as eu honte en public.",
+                    "Est-ce que tu as déjà répandu une fausse rumeur volontairement ?",
+                    "Quelle est la chose la plus stupide que tu aies faite en étant bourré(e) ?",
+                    "Est ce que tu as déjà volé quelque chose à l'école ou au travail ?",
+                    "Si tu devais assassiner quelqu'un, qui choisirais-tu ?",
+                    "Combien de temps as-tu passé sans te laver au maximum ?",
+
+                ],
+                actions: [
+                    "Envoie « C'est quoi ton problème ? » par texto à la dernière personne avec qui tu as parlé au téléphone.",
+                    "Danse avec la personne à ta droite, les autres choisissent la chanson.",
+                    "Choisis quelqu'un dans cette pièce et renifle ses pieds pendant 5 secondes.",
+                    "Laisse la personne à ta gauche regarder tes photos dans ton téléphonne.",
+                    "Agis comme un chien et va chercher 3 objets.",
+                    "Ferme les yeux et laisse les autres joueurs mettre quelque chose de comestible et de non-toxique dans ta bouche. Tu dois le manger.",
+                    "Choisis une personne qui devra dessiner un tatouage sur tes fesses.",
+                    "Va dehors et fait un tchek a la première personne que tu vois.",
+                    "Porte tous tes vêtements à l'envers.",
+                    "Ouvre la fenêtre, penche-toi et chante l'hymne national le plus fort possible !",
+                ]
+            },
+
+            hot: {
+                questions: [
+                    "Tu préfères donner du plaisir ou recevoir du plaisir ?",
+                    "Quel est ton fantasme le plus secret ?",
+                    "As-tu déjà eu une aventure d'un soir ?",
+                    "Quelle est la chose la plus folle que tu aies faite pour l'amour ?",
+                    "As-tu déjà été attiré par un ami proche ?",
+                    "Quelle est ta position préférée ?",
+                    "As-tu déjà eu des pensées coquines au travail ?",
+                    "Quel est ton plus grand tabou ?",
+                    "As-tu déjà envoyé des photos intimes à quelqu'un ?",
+                    "Quelle est la chose la plus embarrassante que tu aies faite en amour ?",
+                    "As-tu déjà eu une expérience avec une personne du même sexe ?",
+                    "Quel est ton plus grand secret inavoué ?",
+                    "Combien de sextoys as-tu ?",
+                    "Est-ce que tu l'as déjà fait en pleine nature ? Si oui, où ?",
+                    "Avec quelle personne célèbre coucherais-tu sans hésiter ?",
+                    "Quel est ton record du nombre de rapports sexuels en une seule journée ?",
+                    "As-tu déjà eu une relation ouverte ?",
+                    "Quand as-tu commencé à te masturber ?",
+                    "Quelle est la chose la plus sexy que tu aies jamais faite ?",
+                    "As-tu déjà eu une expérience avec un inconnu ?",
+                    "Quelle est la chose la plus osée que tu aies faite en public ?",
+                    "As-tu déjà eu une relation à distance ?",
+                    "Quelle est la chose la plus romantique que tu aies faite pour quelqu'un ?",
+                    "As-tu déjà eu une expérience avec un(e) ex ?",
+                    "Avec combien de personnes as- tu déjà couché ?"
+                    
+                ],
+                actions: [
+                    "Dis droit dans les yeux au joueur que tu souhaite que tu aimerais le/la voir nu(e)",
+                    "Fais un bisou sur la joue de la personne à ta droite",
+                    "Mime une action que tu aimerais que le joueur de ton choix réalise ensuite.",
+                    "Supplie la personne à ta gauche de te donner une fessée.",
+                    "Donne un baiser passionné à quelqu'un, comme dans les films...",
+                    "Fais un compliment sexy à la personne de ton choix",
+                    "Fais semblant de te déshabiller devant tout le monde",
+                    "Imite une scène romantique de ton film préféré",
+                    "Fais un massage à la personne de ton choix pendant 1 minute",
+                    "Fais un strip-tease rapide pour la personne de ton choix",
+                    "Fais un câlin à la personne de ton choix en lui chuchotant quelque chose de sexy à l'oreille",
+                    "Fais un compliment à la personne de ton choix sur son apparence physique",
+                    "Suce le doigt de la personne à ta droite.",
+                    "Choisis 2 personnes qui doivent se smacker.",
+                    "Faites un tour de “Suck and Blow” (faites passer une carte avec votre bouche).",
+                    "Gémis aussi fort que tu peux sans rigoler.",
+                    "Choisis une couleur d'un vêtement que tu portes. Tous les joueurs doivent retirer tout vêtement de cette couleur pendant 2 tours.",
+                    "Retire trois vêtements pendant deux tours.",
+                    "Fais un câlin à la personne de ton choix et dis-lui quelque chose de sexy à l'oreille",
+                    "Fais un bisou sur la bouche à la personne de ton choix",
+                    "Fait une baiser dasn le cou de la personne de ton choix",
+                    "Fait trois a cinq pompes au dessus de la personne de ton choix",
+                    "Fais comme si j'étais un étrangé dans un bar. Essaye de me convaincre de venir chez toi."
+                    
+                ]
+            },
+            gachas: {
+                questions: [
+                    "Quel est ton personnage préféré dans un gacha ?",
+                    "Combien as-tu dépensé en gacha ?",
+                    "Quel jeu gacha joues-tu le plus ?",
+                    "As-tu déjà regretté d'avoir dépensé de l'argent dans un gacha ?",
+                    "Quel est le personnage le plus rare que tu aies obtenu ?",
+                    "As-tu déjà passé une nuit blanche à jouer à un gacha ?",
+                    "Quel est le personnage que tu aimerais avoir mais que tu n'as pas ?",
+                    "As-tu déjà été déçu par un gacha ? Si oui, pourquoi ?",
+                    "Quel est le personnage le plus puissant que tu aies obtenu ?",
+                    "As-tu déjà abandonné un gacha parce que tu n'obtenais pas les personnages que tu voulais ?",
+                    "Quel est le personnage que tu trouves le plus mignon dans un gacha ?",
+                    "As-tu déjà créé un compte secondaire pour un gacha ?",
+                    "Quel est le personnage que tu trouves le plus sexy dans un gacha ?",
+                    "As-tu déjà participé à un événement spécial (IRL) ? Si oui, lequel ?",
+                    "Quel est le personnage que tu trouves le plus drôle dans un gacha ?",
+                    "As-tu déjà été surpris par un gacha en obtenant un personnage que tu ne voulais pas ?",
+                    "Quel est le personnage que tu trouves le plus badass dans un gacha ?",
+                    "As-tu déjà été déçu par un événement dans un gacha ? Si oui, lequel ?",
+                    "Quel est le personnage que tu trouves le plus original dans un gacha ?",
+                    "As-tu déjà été attiré par un personnage de gacha ? Si oui, lequel ?",
+                    "Quel est le personnage que tu trouves le plus inspirant dans un gacha ?",
+                    "As-tu déjà été motivé à jouer à un gacha à cause d'un personnage ? Si oui, lequel ?",
+                    "Quel est le personnage que tu trouves le plus emblématique dans un gacha ?",
+                    "As-tu déjà été déçu par un personnage que tu attendais dans un gacha ? Si oui, lequel ?",
+                    "Quel est le personnage que tu trouves le plus mystérieux dans un gacha ?"
+
+                ],
+                actions: [
+                    "Fais semblant de tirer une bannière",
+                    "Crie le nom d'un perso à voix haute",
+                    "Imite un perso de gacha",
+                    "Fais un vœu pour obtenir un personnage spécifique",
+                    "Fais un tirage au sort pour choisir un personnage à incarner",
+                    "Fais un dessin rapide d'un personnage de gacha",
+                    "Fais un bruit de personnage de gacha",
+                    "Fais un compliment à un personnage de gacha",
+                    "Fais un défi de gacha (par exemple, tuer un personnage en moins de 60 secondes)",
+
+
+                ]
+            }
+        };
+
+        let history = [];
+        let usedQuestions = {}; // Suivi des questions utilisées par thème
+        let usedActions = {};  // Suivi des actions utilisées par thème
+
+        function loadQuestion() {
+            const theme = document.getElementById('themeSelect').value;
+            if (!usedQuestions[theme]) usedQuestions[theme] = new Set();
+            if (!usedActions[theme]) usedActions[theme] = new Set();
+            document.getElementById('questionContainer').innerHTML = 'Choisis une option pour commencer...';
+        }
+
+        function chooseOption(type) {
+            const theme = document.getElementById('themeSelect').value;
+            const questionList = questions[theme].questions;
+            const actionList = questions[theme].actions;
+            let availableQuestions = questionList.filter(q => !usedQuestions[theme].has(q));
+            let availableActions = actionList.filter(a => !usedActions[theme].has(a));
+
+            if (availableQuestions.length === 0 && availableActions.length === 0) {
+                const questionContainer = document.getElementById('questionContainer');
+                questionContainer.innerHTML = `<div class="no-proposal">Plus aucune proposition</div>`;
+                setTimeout(() => {
+                    usedQuestions[theme].clear();
+                    usedActions[theme].clear();
+                    chooseOption(type); // Recharger après réinitialisation
+                }, 2000);
+                return;
+            }
+
+            let content;
+            if (type === 'action') {
+                if (availableActions.length === 0) {
+                    usedActions[theme].clear(); // Réinitialiser actions si vides
+                    availableActions = actionList;
+                }
+                const randomIndex = Math.floor(Math.random() * availableActions.length);
+                content = availableActions[randomIndex];
+                usedActions[theme].add(content);
+            } else { // verite
+                if (availableQuestions.length === 0) {
+                    usedQuestions[theme].clear(); // Réinitialiser questions si vides
+                    availableQuestions = questionList;
+                }
+                const randomIndex = Math.floor(Math.random() * availableQuestions.length);
+                content = availableQuestions[randomIndex];
+                usedQuestions[theme].add(content);
+            }
+
+            document.getElementById('questionContainer').innerHTML = content;
+            const displayType = type === 'action' ? '<span style="color: #ff4444;" >Action</span>' : '<span style="color: #00cc00;">Vérité</span>';
+            const displayTheme =
+                theme === 'general'
+                    ? '<span style="color: #ffd700; font-weight: bold;">Général</span>'
+              : theme === 'hot'
+                    ? '<span style="color: #ff4500; font-weight: bold;">Hot</span>'
+              : theme === 'extreme'
+                    ? '<span style="color: #8A2BE2; font-weight: bold;">Extrême</span>'
+              : theme === 'gachas'
+                    ? '<span style="color: #1e90ff; font-weight: bold;">Gachas</span>'
+              : '';
+            history.unshift(`${displayTheme} : ${displayType} : ${content} (${new Date().toLocaleTimeString()})`);
+            document.getElementById('historyList').innerHTML = history.map(item => `<li>${item}</li>`).join('');
+        }
+
+        // Charger une question initiale au démarrage
+        window.onload = loadQuestion;
+    </script>
+</body>
+</html>
