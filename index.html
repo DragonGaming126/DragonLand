@@ -1,77 +1,118 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <link rel="icon" href="Images/icone.png" type="image/png">
-    <title>DragonLand - Accueil</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="Style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Fire Streak – Ton Feu Quotidien</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <h1>Bienvenue à DragonLand</h1>
-        <p>Entrez dans un royaume où le contenu prend vie</p>
-        <nav>
-            <ul>
-                <li><a href="index.html" class="active">Accueil</a></li>
-                <li><a href="minecraft.html">Minecraft</a></li>
-                <li><a href="tutoriels.html">Tutoriels</a></li>
-                <li><a href="jeux.html">Jeux</a></li>
-            </ul>
-        </nav>
-    </header>
-    <main>
-        <section id="accueil">
-            <h2>Bienvenue, Aventurier !</h2>
-            <p>Je suis le gardien de DragonLand, un créateur de contenu passionné par le gaming, les tutoriels et les aventures épiques. <br />Explorez ce royaume et découvrez des expériences uniques !</p>
 
-            <h2>Dernières mises à jour V-1.0</h2>
-            <ul>
-                <li>La page d'accueil a été mis à jour</li>
+<div class="container">
+  <header>🔥 Fire Streak</header>
 
-                <li><strong>Nouveaux jeu : </strong>
-                    <ul class="sous-liste"> 
-                        <li>"Nombre Mystère" avec limite personnalisée - 26/06/2025 </li>
-                        <li>"Memory Game" avec cartes Genshin Impact et Honkai Star Rails - 26/06/2025 </li>
-                        <li>"Tu préfères ?" avec catégories variées - 26/06/2025 </li>
-                        <li>"Action ou vérité" avec catégories variées - 26/06/2025 </li>
-                        <li>Sauvegarde des données de certains jeux sur le navigateur</li>
-                    </ul></li>
+  <!-- TODAY -->
+  <div id="today" class="screen active">
+    <div class="today-circle" id="streak-circle">0</div>
+    <div class="streak" id="current-streak">0 jours</div>
+    <div id="best-streak" class="best">Meilleur : 0 jours</div>
+    <div id="status">Pas encore fait aujourd’hui… 🔥</div>
+    <button class="btn" id="btn-add-today">+ Ajouter entraînement</button>
+  </div>
 
-                <li><strong>Minecraft : </strong>
-                    <ul class="sous-liste"">
-                        <li>Ajout des mods customisé</li>
-                    </ul></li>
+  <!-- ADD -->
+  <div id="add" class="screen">
+    <h2>Ajouter entraînement</h2>
+    <div id="exercise-list"></div>
+    <button id="add-exercise-btn">+ Ajouter un exercice</button>
+    <button class="btn" id="btn-save">Valider 💪</button>
+    <button class="btn btn-secondary" id="btn-cancel">Annuler</button>
+  </div>
 
-                <li><strong>Tutoriels</strong>
-                    <ul class="sous-liste">
-                        <li>Maintenance de la catégorie</li>
-                    </ul>
-                </li>
-            </ul>
+  <!-- CALENDAR -->
+  <div id="calendar" class="screen">
+    <h2>Historique</h2>
+    <div class="calendar-nav">
+      <button id="prev-month">←</button>
+      <div id="month-title"></div>
+      <button id="next-month">→</button>
+    </div>
+    <div id="calendar-grid" class="calendar-grid"></div>
+  </div>
 
-            <h2>Rejoignez la communauté</h2>
-            <p>Suivez-moi sur mes réseaux sociaux pour ne rien manquer :</p>
-            <ul class="social-links">
-                <li><a href="https://www.youtube.com/channel/UCS6PNcmIOM4l93JgH3rJ9cg" target="_blank">
-                    <img src="Images/youtube.png" alt="YouTube">
-                    YouTube</a></li>
-                <li><a href="https://www.twitch.tv/dragon_gaming_tv" target="_blank">
-                    <img src="Images/twitch.png" alt="Twitch">
-                    Twitch</a></li>
-                <li><a href="https://www.tiktok.com/@dragoun_gaming59" target="_blank">
-                    <img src="Images/tiktok.png" alt="TikTok">
-                    TikTok</a></li>
-                <li><a href="https://discord.gg/4pPEkbmS73" target="_blank">
-                    <img src="Images/discord.png" alt="Discord">
-                    Discord</a></li>
-            </ul>
-        </section>
-    </main>
-    <footer>
-        <p>© 2025 DragonLand - Tous droits réservés</p>
-    </footer>
+  <!-- STATS -->
+  <div id="stats" class="screen">
+    <h2>Statistiques globales</h2>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-number" id="total-pompes">0</div>
+        <div class="stat-label">Pompes</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="total-tractions">0</div>
+        <div class="stat-label">Tractions</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="total-abdos">0</div>
+        <div class="stat-label">Abdos / Core</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="total-reps">0</div>
+        <div class="stat-label">Total reps</div>
+      </div>
+    </div>
+    <div class="challenge-card" id="challenge-section" style="display:none;">
+      <h3>Challenge : 100 pompes / jour</h3>
+      <div id="challenge-bar-container"><div id="challenge-bar"></div></div>
+      <div id="challenge-status">0 / 30 jours</div>
+    </div>
+    <div id="level" class="milestone">Niveau : Débutant</div>
+  </div>
+</div>
+
+<!-- Modal détails jour -->
+<div id="day-detail-modal" class="modal" style="display:none;">
+  <div class="modal-content">
+    <span class="close" id="modal-close">×</span>
+    <h3 id="modal-date"></h3>
+    <div class="modal-stats" id="modal-stats"></div>
+    <div class="modal-total" id="modal-total"></div>
+  </div>
+</div>
+
+<!-- Sélecteur exercices (version améliorée avec tags + recherche) -->
+<div id="exercise-selector" class="exercise-selector-modal">
+  <div class="selector-container">
+    <div class="selector-header">
+      <h3>Choisir un exercice</h3>
+      <input id="ex-search" type="text" placeholder="Rechercher (ex: pompes, core, triceps)">
+    </div>
+    <div class="tag-filters">
+      <button class="tag-filter active" data-tag="all">Tous</button>
+      <button class="tag-filter" data-tag="pompes">Pompes</button>
+      <button class="tag-filter" data-tag="tractions">Tractions</button>
+      <button class="tag-filter" data-tag="core">Core</button>
+      <button class="tag-filter" data-tag="jambes">Jambes</button>
+      <button class="tag-filter" data-tag="push">Push</button>
+      <button class="tag-filter" data-tag="pull">Pull</button>
+      <button class="tag-filter" data-tag="cardio">Cardio</button>
+    </div>
+    <div id="ex-list" class="ex-list"></div>
+    <button id="close-selector" class="btn btn-secondary">Annuler</button>
+  </div>
+</div>
+
+<nav>
+  <button data-screen="today" class="active"><span>🏠</span>Today</button>
+  <button data-screen="add"><span>+</span>Ajouter</button>
+  <button data-screen="calendar"><span>📅</span>Calendrier</button>
+  <button data-screen="stats"><span>📊</span>Stats</button>
+</nav>
+
+<script src="script.js"></script>
 </body>
 </html>
