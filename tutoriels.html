@@ -3,236 +3,407 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Fire Streak – Entraînement Quotidien</title>
+  <title>Fire Streak – Ton Feu Quotidien</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --vert: #4caf50;
-      --vert-clair: #81c784;
-      --orange: #ff9800;
-      --gris: #757575;
-      --bg: #121212;
-      --card: #1e1e1e;
-      --text: #e0e0e0;
+      --bg:        #0f0f12;
+      --card:      #18181b;
+      --border:    #27272a;
+      --text:      #e4e4e7;
+      --text-soft: #a1a1aa;
+      --vert:      #22c55e;
+      --vert-soft: #86efac;
+      --orange:    #f97316;
+      --red-fire:  #ef4444;
+      --purple:    #a855f7;
+      --gradient-fire: linear-gradient(135deg, #f97316, #ef4444, #dc2626);
+      --shadow-sm: 0 4px 12px rgba(0,0,0,0.35);
+      --shadow-lg: 0 12px 32px rgba(0,0,0,0.5);
     }
-    body {
+
+    * {
       margin: 0;
-      font-family: system-ui, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      padding: 16px;
+      padding: 0;
       box-sizing: border-box;
     }
-    h1, h2 { margin: 0.4em 0; }
-    .container { max-width: 420px; margin: 0 auto; }
-    .card {
-      background: var(--card);
-      border-radius: 16px;
-      padding: 20px;
-      margin: 16px 0;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100dvh;
+      padding: 0 0 80px;
+      -webkit-font-smoothing: antialiased;
     }
-    .today-circle {
-      width: 140px;
-      height: 140px;
-      background: linear-gradient(145deg, #ff6b6b, #ff8e53);
-      border-radius: 50%;
-      margin: 20px auto;
+
+    .container {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+
+    header {
+      text-align: center;
+      padding: 20px 0 12px;
+      font-family: 'Orbitron', monospace;
+      font-size: 2.1rem;
+      background: var(--gradient-fire);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: -1px;
+    }
+
+    /* ─── Navigation bottom ─── */
+    nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(24,24,27,0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-top: 1px solid var(--border);
       display: flex;
+      padding: 8px 0;
+      z-index: 100;
+    }
+
+    nav button {
+      flex: 1;
+      background: none;
+      border: none;
+      color: var(--text-soft);
+      font-size: 0.82rem;
+      font-weight: 500;
+      padding: 10px 0 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    nav button.active {
+      color: var(--vert-soft);
+      font-weight: 600;
+    }
+
+    nav button span {
+      display: block;
+      font-size: 1.6rem;
+      margin-bottom: 2px;
+    }
+
+    /* ─── Card & Screens ─── */
+    .screen {
+      display: none;
+      background: var(--card);
+      border-radius: 20px;
+      padding: 24px 20px;
+      margin: 16px 12px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1.2rem;
+      color: white;
+      font-weight: 600;
+    }
+
+    /* Streak circle */
+    .today-circle {
+      width: 160px;
+      height: 160px;
+      margin: 24px auto;
+      background: var(--gradient-fire);
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      font-size: 2.8rem;
-      font-weight: bold;
       color: white;
-      box-shadow: 0 8px 30px rgba(255,107,107,0.4);
+      font-weight: 700;
+      font-size: 3.8rem;
+      line-height: 1;
+      box-shadow: 0 12px 40px rgba(239,68,68,0.45);
+      border: 6px solid rgba(255,255,255,0.12);
+      transition: transform 0.3s ease;
     }
+
+    .streak-high .today-circle {
+      animation: pulse-fire 2.2s infinite alternate;
+    }
+
+    @keyframes pulse-fire {
+      from { transform: scale(1);   box-shadow: 0 12px 40px rgba(239,68,68,0.45); }
+      to   { transform: scale(1.06); box-shadow: 0 16px 56px rgba(239,68,68,0.65); }
+    }
+
+    .streak-info {
+      text-align: center;
+      margin: 16px 0 24px;
+    }
+
     .streak {
       font-size: 2.4rem;
-      font-weight: bold;
-      text-align: center;
-      margin: 12px 0;
+      font-weight: 700;
+      margin-bottom: 8px;
     }
-    .streak small { font-size: 1rem; opacity: 0.7; }
+
+    .streak small {
+      font-size: 1.1rem;
+      opacity: 0.8;
+    }
+
+    .best {
+      font-size: 1.1rem;
+      color: var(--text-soft);
+    }
+
+    #status {
+      font-size: 1.35rem;
+      text-align: center;
+      margin: 24px 0;
+      font-weight: 500;
+    }
+
+    /* Boutons */
     .btn {
       background: var(--vert);
       color: white;
       border: none;
-      padding: 14px 24px;
-      font-size: 1.1rem;
-      border-radius: 50px;
+      padding: 16px;
+      font-size: 1.15rem;
+      font-weight: 600;
+      border-radius: 999px;
       cursor: pointer;
-      margin: 12px auto;
-      display: block;
-      width: 80%;
-      max-width: 300px;
-      transition: all 0.2s;
+      width: 100%;
+      margin: 12px 0;
+      transition: all 0.22s ease;
+      box-shadow: 0 6px 20px rgba(34,197,94,0.3);
     }
-    .btn:hover { background: var(--vert-clair); transform: translateY(-2px); }
-    .btn-secondary { background: #424242; }
+
+    .btn:hover {
+      background: var(--vert-soft);
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 10px 28px rgba(34,197,94,0.45);
+    }
+
+    .btn-secondary {
+      background: #2f2f2f;
+      box-shadow: none;
+    }
+
+    .btn-secondary:hover {
+      background: #3f3f46;
+    }
+
     input[type=number] {
       width: 100%;
-      padding: 12px;
-      margin: 8px 0;
-      background: #2d2d2d;
-      border: 1px solid #444;
-      border-radius: 8px;
+      padding: 16px;
+      margin: 12px 0;
+      background: #1f1f23;
+      border: 1px solid #333;
+      border-radius: 12px;
       color: white;
-      font-size: 1.1rem;
+      font-size: 1.3rem;
       text-align: center;
+      transition: border-color 0.2s;
     }
+
+    input:focus {
+      outline: none;
+      border-color: var(--vert);
+      box-shadow: 0 0 0 3px rgba(34,197,94,0.2);
+    }
+
+    label {
+      display: block;
+      margin: 16px 0 6px;
+      font-weight: 500;
+      color: var(--text-soft);
+    }
+
+    /* Calendrier modernisé (heatmap style) */
+    .calendar-header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 16px;
+      font-size: 1.3rem;
+      font-weight: 600;
+    }
+
     .calendar-grid {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
-      gap: 4px;
+      gap: 6px;
       text-align: center;
-      font-size: 0.9rem;
     }
+
+    .day-name {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-soft);
+      padding: 8px 0;
+    }
+
     .day {
-      padding: 10px 0;
-      border-radius: 8px;
-      background: #2a2a2a;
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      background: #1f1f23;
+      border: 1px solid transparent;
+      transition: all 0.18s;
     }
-    .day.done   { background: var(--vert); color: black; font-weight: bold; }
-    .day.today  { border: 3px solid var(--orange); }
-    .day.empty  { background: transparent; }
+
+    .day.today {
+      border: 2.5px solid var(--orange);
+      background: rgba(249,115,22,0.15);
+    }
+
+    .day.done {
+      background: var(--vert);
+      color: black;
+      font-weight: 700;
+      box-shadow: 0 0 12px rgba(34,197,94,0.5);
+    }
+
+    .day.done.intense { background: #16a34a; }
+    .day.done.epic   { background: linear-gradient(135deg, #22c55e, #86efac); color: #0f0f12; }
+
+    .day.empty {
+      background: transparent;
+      border: none;
+    }
+
+    /* Stats */
     .stats-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 16px;
-      text-align: center;
+      margin: 24px 0;
     }
-    .milestone {
-      background: linear-gradient(145deg, #673ab7, #9c27b0);
-      color: white;
-      padding: 12px;
-      border-radius: 12px;
-      font-weight: bold;
-    }
-    .screen { display: none; }
-    .screen.active { display: block; }
-    header {
-      text-align: center;
-      padding: 16px 0;
-      font-size: 1.4rem;
-      font-weight: bold;
-      background: linear-gradient(to right, #ff6b6b, #ff8e53);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    nav {
-      display: flex;
-      justify-content: space-around;
-      margin: 16px 0;
-      background: #1e1e1e;
-      padding: 12px;
+
+    .stat-card {
+      background: #1f1f23;
       border-radius: 16px;
+      padding: 20px 12px;
+      text-align: center;
+      border: 1px solid var(--border);
     }
-    nav button {
-      background: transparent;
-      border: none;
-      color: var(--text);
-      font-size: 1rem;
-      cursor: pointer;
-      padding: 8px 16px;
+
+    .stat-number {
+      font-size: 2.4rem;
+      font-weight: 700;
+      margin-bottom: 6px;
     }
-    nav button.active { color: var(--vert-clair); font-weight: bold; border-bottom: 3px solid var(--vert-clair); }
+
+    .stat-label {
+      color: var(--text-soft);
+      font-size: 0.95rem;
+    }
+
+    .milestone {
+      background: linear-gradient(135deg, var(--purple), #c084fc);
+      color: white;
+      padding: 16px;
+      border-radius: 16px;
+      font-size: 1.3rem;
+      font-weight: 700;
+      text-align: center;
+      margin: 28px 0 12px;
+      box-shadow: 0 6px 20px rgba(168,85,247,0.3);
+    }
+
+    /* Anim confettis (optionnel mais fun) */
+    @keyframes confetti {
+      0%   { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(-120vh) rotate(720deg); opacity: 0; }
+    }
   </style>
 </head>
 <body>
 
 <div class="container">
-
   <header>🔥 Fire Streak</header>
 
-  <nav>
-    <button data-screen="today" class="active">Today</button>
-    <button data-screen="add">+ Ajouter</button>
-    <button data-screen="calendar">Calendrier</button>
-    <button data-screen="stats">Stats</button>
-  </nav>
-
-  <!-- Écran Today -->
-  <div id="today" class="screen card active">
-    <div class="today-circle" id="today-date">04</div>
-    <div class="streak" id="current-streak">Streak : 0 jours 🔥</div>
-    <div style="text-align:center; opacity:0.8;" id="best-streak">Meilleur : 0 jours</div>
-
-    <div id="status" style="text-align:center; margin:20px 0; font-size:1.3rem;">
-      Pas encore fait aujourd'hui…
+  <!-- TODAY -->
+  <div id="today" class="screen active">
+    <div id="streak-circle" class="today-circle">0</div>
+    <div class="streak-info">
+      <div class="streak" id="current-streak">0 jours</div>
+      <div class="best" id="best-streak">Meilleur : 0 jours</div>
     </div>
-
-    <button class="btn" id="btn-add-today">+ Ajouter l'entraînement du jour</button>
+    <div id="status">Pas encore fait aujourd’hui… 🔥</div>
+    <button class="btn" id="btn-add-today">+ Marquer aujourd'hui</button>
   </div>
 
-  <!-- Écran Ajout -->
-  <div id="add" class="screen card">
-    <h2>Ajouter l'entraînement du jour</h2>
+  <!-- ADD -->
+  <div id="add" class="screen">
+    <h2>Ajouter l'entraînement</h2>
     <label>Pompes</label>
-    <input type="number" id="pompes" min="0" value="0" placeholder="ex: 45">
-
+    <input type="number" id="pompes" min="0" value="0">
     <label>Tractions</label>
-    <input type="number" id="tractions" min="0" value="0" placeholder="ex: 12">
-
+    <input type="number" id="tractions" min="0" value="0">
     <label>Abdos</label>
-    <input type="number" id="abdos" min="0" value="0" placeholder="ex: 80">
-
-    <button class="btn" id="btn-save">Valider & Sauvegarder</button>
+    <input type="number" id="abdos" min="0" value="0">
+    <button class="btn" id="btn-save">Valider 💪</button>
     <button class="btn btn-secondary" id="btn-cancel">Annuler</button>
   </div>
 
-  <!-- Écran Calendrier -->
-  <div id="calendar" class="screen card">
+  <!-- CALENDAR -->
+  <div id="calendar" class="screen">
     <h2>Historique</h2>
+    <div class="calendar-header" id="month-title"></div>
     <div id="calendar-grid" class="calendar-grid"></div>
   </div>
 
-  <!-- Écran Stats -->
-  <div id="stats" class="screen card">
-    <h2>Statistiques globales</h2>
+  <!-- STATS -->
+  <div id="stats" class="screen">
+    <h2>Statistiques</h2>
     <div class="stats-grid">
-      <div>
-        <div style="font-size:2.2rem; font-weight:bold;" id="total-pompes">0</div>
-        <div>Pompes</div>
+      <div class="stat-card">
+        <div class="stat-number" id="total-pompes">0</div>
+        <div class="stat-label">Pompes</div>
       </div>
-      <div>
-        <div style="font-size:2.2rem; font-weight:bold;" id="total-tractions">0</div>
-        <div>Tractions</div>
+      <div class="stat-card">
+        <div class="stat-number" id="total-tractions">0</div>
+        <div class="stat-label">Tractions</div>
       </div>
-      <div>
-        <div style="font-size:2.2rem; font-weight:bold;" id="total-abdos">0</div>
-        <div>Abdos</div>
+      <div class="stat-card">
+        <div class="stat-number" id="total-abdos">0</div>
+        <div class="stat-label">Abdos</div>
       </div>
-      <div>
-        <div style="font-size:2.2rem; font-weight:bold;" id="total-reps">0</div>
-        <div>Total reps</div>
+      <div class="stat-card">
+        <div class="stat-number" id="total-reps">0</div>
+        <div class="stat-label">Total reps</div>
       </div>
     </div>
-
-    <div style="margin:24px 0; text-align:center;">
-      <div class="milestone" id="level">Niveau : Débutant</div>
-    </div>
+    <div class="milestone" id="level">Niveau : Débutant</div>
   </div>
-
 </div>
 
+<nav>
+  <button data-screen="today" class="active"><span>🏠</span>Today</button>
+  <button data-screen="add"><span>+</span>Ajouter</button>
+  <button data-screen="calendar"><span>📅</span>Calendrier</button>
+  <button data-screen="stats"><span>📊</span>Stats</button>
+</nav>
+
 <script>
-  // ──────────────────────────────────────────────
-  // Gestion des écrans
-  // ──────────────────────────────────────────────
-  document.querySelectorAll('nav button').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-
-      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-      document.getElementById(btn.dataset.screen).classList.add('active');
-    });
-  });
-
-  // ──────────────────────────────────────────────
-  // Stockage local
-  // ──────────────────────────────────────────────
-  const STORAGE_KEY = 'fireStreakData';
+  const STORAGE_KEY = 'fireStreakData2026';
   let data = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {
     workouts: {},
     totalPompes: 0,
@@ -241,9 +412,7 @@
     bestStreak: 0
   };
 
-  function save() {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-  }
+  function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
 
   function getToday() {
     return new Date().toISOString().split('T')[0];
@@ -262,25 +431,29 @@
       if (isDone(d)) {
         streak++;
         date.setDate(date.getDate() - 1);
-      } else {
-        break;
-      }
+      } else break;
     }
     data.currentStreak = streak;
     if (streak > data.bestStreak) data.bestStreak = streak;
     save();
+    return streak;
   }
 
   function updateTodayScreen() {
     const today = getToday();
-    calculateStreak();
+    const streak = calculateStreak();
 
-    document.getElementById('today-date').textContent = new Date().getDate();
-    document.getElementById('current-streak').innerHTML = `Streak : ${data.currentStreak || 0} jours <small>🔥</small>`;
+    const circle = document.getElementById('streak-circle');
+    circle.textContent = streak;
+    document.getElementById('current-streak').textContent = `${streak} jours`;
     document.getElementById('best-streak').textContent = `Meilleur : ${data.bestStreak} jours`;
 
+    const card = document.getElementById('today');
+    if (streak >= 7) card.classList.add('streak-high');
+    else card.classList.remove('streak-high');
+
     if (isDone(today)) {
-      document.getElementById('status').innerHTML = '<span style="color:#81c784; font-weight:bold;">✓ Tu tiens le feu !</span>';
+      document.getElementById('status').innerHTML = 'Feu allumé aujourd’hui&nbsp;🔥';
       document.getElementById('btn-add-today').style.display = 'none';
     } else {
       document.getElementById('status').textContent = 'Pas encore fait aujourd’hui…';
@@ -289,97 +462,125 @@
   }
 
   function updateStats() {
-    document.getElementById('total-pompes').textContent = data.totalPompes;
-    document.getElementById('total-tractions').textContent = data.totalTractions;
-    document.getElementById('total-abdos').textContent = data.totalAbdos;
-    const total = data.totalPompes + data.totalTractions + data.totalAbdos;
-    document.getElementById('total-reps').textContent = total;
+    const totals = {
+      pompes: data.totalPompes,
+      tractions: data.totalTractions,
+      abdos: data.totalAbdos
+    };
+    const totalReps = Object.values(totals).reduce((a,b)=>a+b,0);
+
+    document.getElementById('total-pompes').textContent   = totals.pompes;
+    document.getElementById('total-tractions').textContent = totals.tractions;
+    document.getElementById('total-abdos').textContent    = totals.abdos;
+    document.getElementById('total-reps').textContent     = totalReps;
 
     let level = 'Débutant';
-    if (total >= 10000) level = 'Or 🔥🔥🔥';
-    else if (total >= 5000) level = 'Argent 🔥🔥';
-    else if (total >= 1000) level = 'Bronze 🔥';
+    if (totalReps >= 25000) level = 'Légende 🔥🔥🔥🔥';
+    else if (totalReps >= 15000) level = 'Elite 🔥🔥🔥';
+    else if (totalReps >= 8000)  level = 'Avancé 🔥🔥';
+    else if (totalReps >= 3000)  level = 'Intermédiaire 🔥';
+    else if (totalReps >= 500)   level = 'Régulier';
+
     document.getElementById('level').textContent = `Niveau : ${level}`;
   }
 
   function generateCalendar() {
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = now.getMonth();
-    const firstDay = new Date(year, month, 1);
-    const lastDay = new Date(year, month + 1, 0);
-    const startWeekday = firstDay.getDay() || 7; // lundi = 1
+    const now    = new Date();
+    const year   = now.getFullYear();
+    const month  = now.getMonth();
+    const first  = new Date(year, month, 1);
+    const last   = new Date(year, month + 1, 0);
+    const startD = first.getDay() || 7; // 1 = lundi
+
+    document.getElementById('month-title').textContent =
+      new Intl.DateTimeFormat('fr-FR', { month: 'long', year: 'numeric' }).format(now);
 
     const grid = document.getElementById('calendar-grid');
     grid.innerHTML = '';
 
-    // En-têtes jours
+    // Jours de la semaine
     ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'].forEach(d => {
       const el = document.createElement('div');
+      el.className = 'day-name';
       el.textContent = d;
-      el.style.fontWeight = 'bold';
-      el.style.opacity = 0.6;
       grid.appendChild(el);
     });
 
-    // Jours vides avant le 1er
-    for (let i = 1; i < startWeekday; i++) {
-      const el = document.createElement('div');
-      el.className = 'day empty';
-      grid.appendChild(el);
+    // Cases vides
+    for (let i = 1; i < startD; i++) {
+      grid.appendChild(Object.assign(document.createElement('div'), {className:'day empty'}));
     }
 
-    // Jours du mois
-    for (let d = 1; d <= lastDay.getDate(); d++) {
+    // Jours
+    for (let d = 1; d <= last.getDate(); d++) {
       const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
       const el = document.createElement('div');
       el.className = 'day';
       el.textContent = d;
 
       if (dateStr === getToday()) el.classList.add('today');
-      if (isDone(dateStr)) el.classList.add('done');
+      if (isDone(dateStr)) {
+        el.classList.add('done');
+        const reps = data.workouts[dateStr];
+        const sum = (reps?.pompes||0) + (reps?.tractions||0) + (reps?.abdos||0);
+        if (sum >= 200) el.classList.add('epic');
+        else if (sum >= 100) el.classList.add('intense');
+      }
 
       grid.appendChild(el);
     }
   }
 
-  // ──────────────────────────────────────────────
-  // Événements
-  // ──────────────────────────────────────────────
-  document.getElementById('btn-add-today').addEventListener('click', () => {
+  // ─── Navigation ───
+  document.querySelectorAll('nav button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById(btn.dataset.screen).classList.add('active');
+
+      if (btn.dataset.screen === 'calendar') generateCalendar();
+    });
+  });
+
+  // ─── Boutons actions ───
+  document.getElementById('btn-add-today').onclick = () =>
     document.querySelector('nav button[data-screen="add"]').click();
-  });
 
-  document.getElementById('btn-cancel').addEventListener('click', () => {
+  document.getElementById('btn-cancel').onclick = () =>
     document.querySelector('nav button[data-screen="today"]').click();
-  });
 
-  document.getElementById('btn-save').addEventListener('click', () => {
+  document.getElementById('btn-save').onclick = () => {
     const today = getToday();
-    const pompes    = parseInt(document.getElementById('pompes').value)    || 0;
-    const tractions = parseInt(document.getElementById('tractions').value) || 0;
-    const abdos     = parseInt(document.getElementById('abdos').value)     || 0;
+    const vals = {
+      pompes:   parseInt(document.getElementById('pompes').value)   || 0,
+      tractions: parseInt(document.getElementById('tractions').value) || 0,
+      abdos:    parseInt(document.getElementById('abdos').value)    || 0
+    };
+    const total = vals.pompes + vals.tractions + vals.abdos;
 
-    const total = pompes + tractions + abdos;
-    if (total === 0) {
-      if (!confirm("Enregistrer la journée avec 0 répétition ?")) return;
-    }
+    if (total === 0 && !confirm("Enregistrer 0 répétition ?")) return;
 
-    data.workouts[today] = { pompes, tractions, abdos };
-    data.totalPompes    += pompes;
-    data.totalTractions += tractions;
-    data.totalAbdos     += abdos;
+    data.workouts[today] = vals;
+    data.totalPompes   += vals.pompes;
+    data.totalTractions += vals.tractions;
+    data.totalAbdos    += vals.abdos;
 
     save();
     updateTodayScreen();
     updateStats();
     generateCalendar();
 
-    alert("Entraînement enregistré ! 💪");
+    // Petit feedback visuel
+    alert("Session enregistrée ! Continue le feu 🔥");
     document.querySelector('nav button[data-screen="today"]').click();
-  });
 
-  // Initialisation
+    // Reset inputs
+    ['pompes','tractions','abdos'].forEach(id => document.getElementById(id).value = 0);
+  };
+
+  // Init
   updateTodayScreen();
   updateStats();
   generateCalendar();
